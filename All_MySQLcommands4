@@ -1,0 +1,368 @@
+create DATABASE SAMPLEDB
+use sampledb
+
+create table Student(rollno int,
+                    name varchar(100) not null,
+                    subject varchar(100) not null,
+                    crid int                                          
+                    )
+
+drop table testtbl
+
+
+drop database testDB
+
+
+create table testtbl(tid int primary key AUTO_INCREMENT not null, tnm varchar(100))
+
+
+
+ALTER TABLE course ADD PRIMARY KEY(crid);
+
+alter table testtbl add cost bigint;
+
+alter table testtbl modify cost int;
+
+
+_________________________________________________________________
+alter table testtbl add age int
+
+alter table testtbl drop COLUMN age
+__________________________________________________________________
+
+ALTER TABLE student modify rollno INT AUTO_INCREMENT PRIMARY KEY;
+
+
+alter table course modify crid int AUTO_INCREMENT
+
+_______________________________________________________
+
+TRUNCATE table testtbl
+
+/* remove all reacords*/
+
+
+alter table testtbl rename to new_test_tbl 
+
+
+/* rename table name */
+
+
+________________________________________
+
+SELECT QUERY
+
+
+SELECT * FROM `student`
+
+SELECT rollno,name FROM `student`
+
+SELECT * from student where crid=3
+
+SELECT rollno as STUDENTROLLNUMBER ,name as STUDENTNAME from student;
+
+ELECT * FROM `student` WHERE crid > 3
+
+SELECT * FROM `student` WHERE crid>3 and crid<8;
+
+SELECT * FROM `student` WHERE crid>5 or rollno>40
+
+___________________________________________________
+
+create table employee(id int primary key auto_increment not null,name varchar(50));
+alter table employee add salary bigint;
+alter table employee modify salary int;
+truncate table employee;
+alter table employee add age int;
+alter table employee rename to new_employee;
+insert into new_employee(name,salary,age)values('Anket','15000',20),('shamsheera','15000',20),('Amrin','20000',30);
+delete from new_employee where id=1;
+update new_employee set name='Shamsheera AT',salary='18000',age='30' where id=2;
+select * from new_employee;
+select name,age from new_employee;
+select * from  new_employee where id=3;
+select name as EMPLOYEENAME,age as EMPLOYEEAGE from new_employee;
+-- single line comment:
+/*
+gfdsfgdhnbc v
+dfbdnsfbhd
+*/
+
+/* aggregate functions*/
+ /*count , sum, max, min, average, product*/
+
+
+ select count(*) from course where duration>=5;
+
+ select count(*) as Total_Course from course where duration>=5;
+
+select Max(cost) as MaxCost from course where duration>=5;
+
+select Max(cost) as MaxCost,crnm from course where duration>=5;
+
+select sum(cost) as MaxCost from course where duration>=5;
+
+___________________________________________________________________
+
+use AND OR with these above commands
+
+_____________________________________________________________________
+
+arrange records - order by
+
+SELECT * FROM `course` order by crnm;
+
+SELECT * FROM `course` order by crnm desc;
+
+select * from course where duration>=5 order by crnm desc;
+
+select * from student where name like '%ri%50%';
+
+select * from course where crnm like '%or%' or crnm like '%on%';
+
+select * from new_test_tbl where cost is null;
+
+select * from new_test_tbl where cost is not null;
+
+select * from course where cost >= 5000 and cost <=10000;
+
+update student set subject='EC' , name='William' where rollno = 9
+
+delete from student where rollno = 53;
+
+______________________________________________________________
+
+will show first record of every group
+
+SELECT * FROM student group by crid;
+
+SELECT count(*) as Total_Student ,crid as CourseID FROM student group by crid;
+
+SELECT count(*) as Total_Student ,crid as CourseID FROM student group by crid having crid>=6;
+
+SELECT count(*) as Total_Student ,crid as CourseID FROM student where rollno >= 10 group by crid having crid>=6;
+
+select * from employee where dept_id between 1112 and 1114;
+
+select * from employee where emp_name in ('adam','aman','jack','william');
+
+select * from employee where hire_date between '2013-01-01' and '2020-01-01';
+
+select * from employee where hire_date between '2015-01-01' and '2016-01-01';
+
+select * from employee where hire_date in ('2015-11-10','2021-11-03');
+
+_____________________________________________________________________________
+Relationship in Department and Empl tables(Primary - Foreign Key based)
+It support one to many  and the cascading operations as well
+
+
+
+create table department(dept_id int primary key AUTO_INCREMENT not null, deptnm varchar(100))
+
+
+create table EMPTBL(empid int primary key AUTO_INCREMENT not null, empnm varchar(100),dept_id int ,foreign key(dept_id) REFERENCES department(dept_id)) 
+
+______________________________________________________________
+// putting cascade option in command , It will work out for null as well
+
+
+
+create table EMPTBL(empid int primary key AUTO_INCREMENT not null, empnm varchar(100),dept_id int ,foreign key(dept_id) REFERENCES department(dept_id) on delete CASCADE)
+
+
+
+_____________________________________________________________________________
+
+Merged Queries:
+
+select columnnames from tbl1 , tbl2 where 
+
+
+select s.rollno,s.name,c.crnm from student s,course c where c.crid = s.crid
+
+
+____________________________________________________________________________
+
+tables:
+1.CREATE TABLE Products(  
+    ID INT,  
+    Product_Name VARCHAR(65),  
+    Price DECIMAL(9,2) )
+INSERT INTO Products(ID, Product_Name, Price) VALUES   
+(1, 'Table', 150), (2, 'Desk', 100),  
+(3, 'Chair', 75), (4, 'Computer', 225);
+
+2.CREATE TABLE TargetProducts(  
+    ID INT,  
+    Product_Name VARCHAR(65),  
+    Price DECIMAL(9,2)  
+)
+INSERT INTO TargetProducts(ID, Product_Name, Price) VALUES  
+(1, 'Table', 150),  
+(2, 'Desk', 150),  
+(5, 'Bed', 100),  
+(6, 'Cupboard', 350);
+SELECT * FROM Products  ,TargetProducts
+
+
+CREATE TABLE Fee (   
+  admission_no varchar(45) NOT NULL,  
+  course varchar(45) NOT NULL,      
+  amount_paid int);
+CREATE TABLE Student (      
+  id int PRIMARY KEY not null,     
+  admission_no varchar(45) NOT NULL,  
+  first_name varchar(45) NOT NULL,      
+  last_name varchar(45) NOT NULL,  
+  age int,  
+  city varchar(25) NOT NULL      
+);
+inner join:
+
+SELECT Student.admission_no, Student.first_name, Student.last_name, Fee.course, Fee.amount_paid  
+FROM Student  
+INNER JOIN Fee  
+ON Student.admission_no = Fee.admission_no;
+
+self join:
+SELECT S1.first_name, S2.last_name, S2.city  
+FROM Student S1, Student S2  
+WHERE S1.id <> S2.iD AND S1.city = S2.city  
+ORDER BY S2.city;
+
+crossJoin:
+
+SELECT column_lists    
+FROM table1    
+CROSS JOIN table2;
+
+left outer:
+SELECT Student.admission_no, Student.first_name, Student.last_name, Fee.course, Fee.amount_paid  
+FROM Student  
+LEFT OUTER JOIN Fee  
+ON Student.admission_no = Fee.admission_no;
+
+right outer:
+SELECT Student.admission_no, Student.first_name, Student.last_name, Fee.course, Fee.amount_paid  
+FROM Student  
+RIGHT OUTER JOIN Fee  
+ON Student.admission_no = Fee.admission_no;
+
+joins
+
+
+1: full join 
+
+select s.rollno,s.name,c.crnm from student s left join course c on c.crid=s.crid union select s.rollno,s.name,c.crnm from student s right join course c on c.crid=s.crid;
+
+2: left join 
+ 
+
+select s.rollno,s.name,c.crnm from student s left join course c on c.crid=s.crid
+
+3: right join
+
+select s.rollno,s.name,c.crnm from student s right join course c on c.crid=s.crid
+
+4: inner join
+
+select s.rollno,s.name,c.crnm from student s inner join course c on c.crid=s.crid
+
+5:  Self join
+
+select s.empid, s.emp_name,s.job_name,e.manager_id from employee s , employee e where s.empid < e.manager_id;
+
+
+__________________________________________________________________
+
+sql functions
+
+
+
+select distinct pnm from product
+
+select count(distinct pnm) from product
+
+select pnm,max(price),min(price) from product group by pnm
+
+select pow(2,3) as PowerOf
+
+select round(123.645,2),round(123.645,1),round(123.645,0),round(123.45,0),round(123.45,-1),round(123.45,-2);
+
+
+select length(pname)
+
+select length(pnm) from product;
+
+
+
+select year("1979/11/26"),month("1979/11/26"),day("1979/11/26"),monthname("1969/11/25");
+
+select year(hire_date),month(hire_date),day(hire_date),monthname(hire_date) from employee;
+
+
+
+select left ("india",3),right("computer science",4)
+
+select left(job_name,4) from employee;
+
+select mid("programming",4,5),substr("programming",4)
+SELECT UCASE ("Welcome to Javaprogramming") AS UpperCase_String;
+SELECT UCASE (emname) FROM employeetbl;
+SELECT LCASE (ColumnName) FROM TableName;
+_________________________________________________________________________
+select PRNAME,PRICE from products union all select PRNAME,PRICE from specialprdct
+
+
+create savepoint
+
+insert into product(pnm,qty,price,manufactuer) values('AMD Processor',4,8000,'DELL')
+
+commit
+
+update product set price=9000 where prid=13
+
+SAVEPOINT A;
+
+insert into product(pnm,qty,price,manufactuer) values('mouse',4,650,'DELL')
+
+SAVEPOINT b;
+
+insert into product(pnm,qty,price,manufactuer) values('headphone',3,750,'DELL')
+
+SAVEPOINT c;
+
+
+select * from product
+CREATE PROCEDURE studentList()
+select  * from student_detail
+GO;
+call studentList;
+create table student_detail (id int not null,name varchar(50),Address varchar(100));
+create table student_mark(id int not null,name varchar(50),marks int,age int);
+insert into student_detail (id,Name,Address) values('1','aditya','shdjfdghfj'),('2','amreen','sdfjghdsjf'),('3','arman','shfgdsfgd');
+insert into student_mark (id,name,marks,age) values('1','aditya','99','20'),('2','amreen','88','21'),('3','arman','69','22'),('4','Dilawar','100','20');
+select * from student_detail;
+select * from student_mark;
+create view detailsStudent as select Name,address from student_detail where id<3;
+select * from detailsStudent;
+drop view detailsStudent;
+drop view details;
+drop table student_detail;
+create table student_detail (id int not null,name varchar(50),Address varchar(100));
+insert into student_detail (id,name,Address) values('1','aditya','shdjfdghfj'),('2','amreen','sdfjghdsjf'),('3','arman','shfgdsfgd');
+create view marks as select student_detail.name from student_detail,student_mark where student_detail.name=student_mark.name;
+select * from marks;
+select name,address from student_detail union all select name,age from  student_mark; 
+CREATE PROCEDURE studentList()
+select  * from student_detail
+GO;
+call studentList;
+
+
+
+
+
+
+
